@@ -19,7 +19,7 @@ public class ApiAspect {
     private int maxCalls;
     private static final Logger log = LoggerFactory.getLogger(ApiAspect.class);
 
-    @Around("@annotation(com.example.aop.ApiCalls)")
+    @Around("@annotation(com.example.aop.ApiCall)")
     public Object logMethodCalls(ProceedingJoinPoint jp) throws Throwable {
         if (maxCalls > 0) {
             var res = jp.proceed();

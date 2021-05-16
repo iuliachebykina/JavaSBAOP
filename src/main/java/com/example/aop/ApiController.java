@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiController {
     private static final Logger log = LoggerFactory.getLogger(ApiController.class);
 
-    @ApiCalls
+    @ApiCall
     @GetMapping("/first")
     public String firstApi() {
         log.info("First Api");
         return "first";
     }
 
-    @ApiCalls
+    @ApiCall
     @PostMapping("/second")
     public String secondApi() {
         log.info("Second Api");
