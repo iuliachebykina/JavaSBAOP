@@ -1,2 +1,3 @@
 app:
-  max_calls: 3
+  first_api_max_calls: 3
+  second_api_max_calls: 5

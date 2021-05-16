@@ -15,18 +15,31 @@ import org.springframework.stereotype.Component;
 public class ApiAspect {
 
 
-    @Value("${app.max_calls}")
-    private int maxCalls;
+    @Value("${app.first_api_max_calls}")
+    private int firstMaxCalls;
+    @Value("${app.second_api_max_calls}")
+    private int secondMaxCalls;
     private static final Logger log = LoggerFactory.getLogger(ApiAspect.class);
 
-    @Around("@annotation(com.example.aop.ApiCall)")
-    public Object logMethodCalls(ProceedingJoinPoint jp) throws Throwable {
-        if (maxCalls > 0) {
+    @Around("@annotation(com.example.aop.FirstApiCall)")
+    public Object FirstApiCall(ProceedingJoinPoint jp) throws Throwable {
+        if (firstMaxCalls > 0) {
             var res = jp.proceed();
-            maxCalls--;
+            firstMaxCalls--;
             return res;
         }
-        log.error("api больше вызывать нельзя");
+        log.error("first api больше вызывать нельзя");
+        return null;
+    }
+
+    @Around("@annotation(com.example.aop.SecondApiCall)")
+    public Object SecondApiCall(ProceedingJoinPoint jp) throws Throwable {
+        if (secondMaxCalls > 0) {
+            var res = jp.proceed();
+            secondMaxCalls--;
+            return res;
+        }
+        log.error("second api больше вызывать нельзя");
         return null;
     }
 }
