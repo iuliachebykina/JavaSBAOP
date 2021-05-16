@@ -28,7 +28,7 @@ public class ApiAspect {
             firstMaxCalls--;
             return res;
         }
-        log.error("first api больше вызывать нельзя");
+        log.warn("first api больше вызывать нельзя");
         return null;
     }
 
@@ -39,7 +39,7 @@ public class ApiAspect {
             secondMaxCalls--;
             return res;
         }
-        log.error("second api больше вызывать нельзя");
+        log.warn("second api больше вызывать нельзя");
         return null;
     }
 }
