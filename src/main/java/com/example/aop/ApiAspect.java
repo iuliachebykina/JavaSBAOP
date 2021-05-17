@@ -14,32 +14,29 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApiAspect {
 
-
     @Value("${app.first_api_max_calls}")
     private int firstMaxCalls;
     @Value("${app.second_api_max_calls}")
     private int secondMaxCalls;
     private static final Logger log = LoggerFactory.getLogger(ApiAspect.class);
 
-    @Around("@annotation(com.example.aop.FirstApiCall)")
-    public Object FirstApiCall(ProceedingJoinPoint jp) throws Throwable {
-        if (firstMaxCalls > 0) {
-            var res = jp.proceed();
-            firstMaxCalls--;
-            return res;
-        }
-        log.warn("first api больше вызывать нельзя");
-        return null;
-    }
-
-    @Around("@annotation(com.example.aop.SecondApiCall)")
-    public Object SecondApiCall(ProceedingJoinPoint jp) throws Throwable {
-        if (secondMaxCalls > 0) {
-            var res = jp.proceed();
+    @Around(value = "@annotation(com.example.aop.ApiCall)")
+    public Object apiCall(ProceedingJoinPoint jp) throws Throwable {
+        Object result = null;
+        var methodName = jp.getSignature().getName();
+        if (methodName.equals("firstApi")) {
+            if (firstMaxCalls > 0) {
+                firstMaxCalls--;
+                result = jp.proceed();
+            } else {
+                log.warn(methodName + " больше вызывать нельзя");
+            }
+        } else if (secondMaxCalls > 0) {
             secondMaxCalls--;
-            return res;
+            result = jp.proceed();
+        } else {
+            log.warn(methodName + " больше вызывать нельзя");
         }
-        log.warn("second api больше вызывать нельзя");
-        return null;
+        return result;
     }
 }
