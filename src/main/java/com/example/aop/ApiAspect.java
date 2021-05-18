@@ -40,7 +40,7 @@ public class ApiAspect {
             }
         }
         if (map.get(methodName).get() > 0) {
-            map.put(methodName, new AtomicInteger(map.get(methodName).decrementAndGet()));
+            map.get(methodName).decrementAndGet();
             return jp.proceed();
         } else {
             log.warn(methodName + " больше вызывать нельзя");
