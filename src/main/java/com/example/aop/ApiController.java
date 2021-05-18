@@ -1,5 +1,6 @@
 package com.example.aop;
 
+import lombok.Synchronized;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,14 +14,14 @@ public class ApiController {
 
     @ApiCall
     @GetMapping("/first")
-    public String firstApi() {
+    public synchronized String firstApi() {
         log.info("First Api");
         return "first";
     }
 
     @ApiCall
     @PostMapping("/second")
-    public String secondApi() {
+    public synchronized String secondApi() {
         log.info("Second Api");
         return "second";
     }
