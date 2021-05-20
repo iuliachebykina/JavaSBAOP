@@ -1,52 +1,43 @@
 package com.example.aop;
 
 
+import lombok.Data;
+import lombok.Synchronized;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Scope;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
-import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 @Aspect
 @Component
-@Scope("prototype")
+@ConfigurationProperties(prefix = "app")
+@Data
 public class ApiAspect {
 
-    @Value("${app.first_api_max_calls}")
-    private int firstMaxCalls;
-    @Value("${app.second_api_max_calls}")
-    private int secondMaxCalls;
     private static final Logger log = LoggerFactory.getLogger(ApiAspect.class);
-    private static final Map<String, AtomicInteger> map = new TreeMap<>();
+    private Map<String, Integer> map;
 
 
     @Around(value = "@annotation(com.example.aop.ApiCall)")
+    @Synchronized
     public Object apiCall(ProceedingJoinPoint jp) throws Throwable {
         var methodName = jp.getSignature().getName();
-        if (!map.containsKey(methodName)) {
-            if (methodName.equals("firstApi")) {
-                map.put(methodName, new AtomicInteger(firstMaxCalls));
-            } else if (methodName.equals("secondApi")) {
-                map.put(methodName, new AtomicInteger(secondMaxCalls));
-            }
+        if(!map.containsKey(methodName)){
+            log.error("Для метода " + methodName + " не определено максимальное число вызовов");
+            return jp.proceed();
         }
-        if (map.get(methodName).get() > 0) {
-            map.get(methodName).decrementAndGet();
+        if (map.get(methodName)> 0) {
+            map.put(methodName, map.get(methodName)-1);
             return jp.proceed();
         } else {
             log.warn(methodName + " больше вызывать нельзя");
         }
         return null;
     }
-
-
 }
