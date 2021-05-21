@@ -36,7 +36,7 @@ public class ApiAspect {
             map.put(methodName, map.get(methodName) - 1);
             return jp.proceed();
         } else {
-            log.warn(methodName + " больше вызывать нельзя");
+            log.error(methodName + " больше вызывать нельзя");
         }
         return null;
     }
