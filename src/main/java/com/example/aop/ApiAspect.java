@@ -26,14 +26,14 @@ public class ApiAspect {
 
     @Around(value = "@annotation(com.example.aop.ApiCall)")
     @Synchronized
-    public Object apiCall(ProceedingJoinPoint jp) throws Throwable {
+    public Object maxApiCalls(ProceedingJoinPoint jp) throws Throwable {
         var methodName = jp.getSignature().getName();
-        if(!map.containsKey(methodName)){
+        if (!map.containsKey(methodName)) {
             log.error("Для метода " + methodName + " не определено максимальное число вызовов");
-            return jp.proceed();
+            return null;
         }
-        if (map.get(methodName)> 0) {
-            map.put(methodName, map.get(methodName)-1);
+        if (map.get(methodName) > 0) {
+            map.put(methodName, map.get(methodName) - 1);
             return jp.proceed();
         } else {
             log.warn(methodName + " больше вызывать нельзя");
