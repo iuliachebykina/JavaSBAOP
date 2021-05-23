@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiController {
     private static final Logger log = LoggerFactory.getLogger(ApiController.class);
 
-
     @ApiCall
     @GetMapping("/first")
     public synchronized String firstApi() {

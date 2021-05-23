@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 
-
 @Aspect
 @Component
 @Data
@@ -23,7 +22,6 @@ public class ApiAspect {
     public ApiAspect(Calls calls) {
         this.calls = calls;
     }
-
 
     @Around(value = "@annotation(com.example.aop.ApiCall)")
     @Synchronized

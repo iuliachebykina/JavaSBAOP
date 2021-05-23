@@ -14,8 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ApiConfig {
 
     private ConcurrentHashMap<String, Integer> map;
+
     @Bean
-    public Calls calls(){
+    public Calls calls() {
         return new Calls(map);
     }
 }
