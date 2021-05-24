@@ -27,12 +27,13 @@ public class ApiAspect {
     @Synchronized
     public Object maxApiCalls(ProceedingJoinPoint jp) throws Throwable {
         var methodName = jp.getSignature().getName();
-        if (!calls.getMap().containsKey(methodName)) {
+        var map = calls.getMap();
+        if (!map.containsKey(methodName)) {
             log.error("Для метода " + methodName + " не определено максимальное число вызовов");
             return null;
         }
-        if (calls.getMap().get(methodName) > 0) {
-            calls.getMap().put(methodName, calls.getMap().get(methodName) - 1);
+        if (map.get(methodName) > 0) {
+            map.put(methodName, map.get(methodName) - 1);
             return jp.proceed();
         } else {
             log.error(methodName + " больше вызывать нельзя");
