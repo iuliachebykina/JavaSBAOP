@@ -24,7 +24,6 @@ public class ApiAspect {
     }
 
     @Around(value = "@annotation(com.example.aop.ApiCall)")
-    @Synchronized
     public Object maxApiCalls(ProceedingJoinPoint jp) throws Throwable {
         var methodName = jp.getSignature().getName();
         var map = calls.getMap();
