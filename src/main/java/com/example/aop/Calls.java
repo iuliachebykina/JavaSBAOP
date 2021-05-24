@@ -7,7 +7,6 @@ import lombok.RequiredArgsConstructor;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Data
-@RequiredArgsConstructor
 public class Calls {
     private ConcurrentHashMap<String, Integer> map;
 
